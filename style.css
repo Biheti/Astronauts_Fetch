@@ -1,0 +1,21 @@
+.list-group-item:hover {
+    background-color: grey;
+    transform: scale(1.1);
+
+
+
+}
+
+
+
+.list-group-item {
+    transition: background-color 500ms ease-in-out, transform 500ms ease-in-out;
+
+}
+
+body {
+    background-image: url(dominik-schroder-FIKD9t5_5zQ-unsplash.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
