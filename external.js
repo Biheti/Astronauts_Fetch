@@ -4,68 +4,63 @@ let btnKoordinate = document.getElementById("btn");
 let span1 = document.getElementById("span1");
 let span2 = document.getElementById("span2");
 let selectStation = document.getElementById("selectStation");
-// console.log(typeof dugme)
-// console.log(typeof lista)
-// console.log(typeof btnKoordinate)
-// console.log(span1)
-// console.log(span2)
+let onCoordinates = document.getElementById("onCoordinates")
+let offCoordinates = document.getElementById("offCoordinates")
+let intervalID;
+console.log(onCoordinates.checked)
+console.log(offCoordinates.checked)
+
+
+
 
 let url2 = "http://api.open-notify.org/iss-now.json";
 let url = "http://api.open-notify.org/astros.json";
 
 async function fetchData(stationName = "") {
-  console.log(stationName.target.value);
   try {
     let response = await fetch(url);
     let data = await response.json();
-    console.log(data);
     let zhangLu = data.people.find((e) => e.name === "Zhang Lu");
     let ostatak = data.people.filter((e) => e.name !== "Zhang Lu");
     ostatak.unshift(zhangLu);
-    console.log(zhangLu);
-    console.log(ostatak);
     let stationListAll = [];
     for (let i = 0; i < data.people.length; i++) {
       stationListAll.push(data.people[i].craft);
     }
     let stationList = [...new Set(stationListAll)];
-    console.log(stationList);
+
     if (stationName.target.value === "") {
-      selectStation.innerHTML = "";
-      for (let i = 0; i < stationList.length; i++) {
-        let option = document.createElement("option");
-        option.textContent = stationList[i];
-        option.value = stationList[i];
-        selectStation.appendChild(option);
-      }
+      renderStationCrew(stationList, selectStation, "option")
     }
-    console.log(stationName);
     if (stationName.target.value === "") {
-      lista.innerHTML = "";
-      for (let i = 0; i < ostatak.length; i++) {
-        let novaLista = document.createElement("li");
-        novaLista.classList = "list-group-item";
-        novaLista.textContent = ostatak[i].name;
-        lista.appendChild(novaLista);
-      }
+      renderStationCrew(ostatak, lista, "li");
     } else {
       let stationCrew = data.people.filter(
         (item) => item.craft === stationName.target.value
       );
-      lista.innerHTML = "";
-      for (let i = 0; i < stationCrew.length; i++) {
-        let novaLista = document.createElement("li");
-        novaLista.classList = "list-group-item";
-        novaLista.textContent = stationCrew[i].name;
-        lista.appendChild(novaLista);
-      }
-
-      console.log(stationCrew);
+      renderStationCrew(stationCrew, lista, "li");
     }
   } catch (error) {
     console.log(error);
   }
 }
+if (onCoordinates) {
+  onCoordinates.addEventListener("change", (e) => {
+    if (e.target.checked === true) {
+      startTimer()
+
+    }
+  })
+}
+
+if (offCoordinates) {
+  offCoordinates.addEventListener("change", (e) => {
+    if (e.target.checked) {
+      clearInterval(intervalID)
+    }
+  })
+}
+
 if (dugme) {
   dugme.addEventListener("click", fetchData);
 }
@@ -74,11 +69,9 @@ if (selectStation) {
     fetchData(e);
   });
 }
-
-if (btnKoordinate) {
-  btnKoordinate.addEventListener("click", startTimer);
-}
-//btnKoordinate.addEventListener("click", () => { console.log("HI") });
+// if (btnKoordinate) {
+//   btnKoordinate.addEventListener("click", startTimer);
+// }
 
 async function fetchData2() {
   try {
@@ -94,6 +87,18 @@ async function fetchData2() {
 }
 
 function startTimer() {
-  console.log("HI");
-  setInterval(fetchData2, 2000);
+  intervalID = setInterval(fetchData2, 2000);
+}
+
+
+
+function renderStationCrew(crew, renderList, elementType) {
+  renderList.innerHTML = "";
+
+  for (let i = 0; i < crew.length; i++) {
+    let novaLista = document.createElement(elementType);
+    novaLista.classList = "list-group-item";
+    novaLista.textContent = crew[i].name ? crew[i].name : crew[i];
+    renderList.appendChild(novaLista);
+  }
 }

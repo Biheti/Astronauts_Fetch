@@ -19,3 +19,11 @@ body {
     background-position: center;
     background-repeat: no-repeat;
 }
+
+.coordinatesBackground {
+    background-image: url(photo-1446776811953-b23d57bd21aa.avif);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+}
