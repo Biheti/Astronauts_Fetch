@@ -4,14 +4,9 @@ let btnKoordinate = document.getElementById("btn");
 let span1 = document.getElementById("span1");
 let span2 = document.getElementById("span2");
 let selectStation = document.getElementById("selectStation");
-let onCoordinates = document.getElementById("onCoordinates")
-let offCoordinates = document.getElementById("offCoordinates")
+let onCoordinates = document.getElementById("onCoordinates");
+let offCoordinates = document.getElementById("offCoordinates");
 let intervalID;
-console.log(onCoordinates.checked)
-console.log(offCoordinates.checked)
-
-
-
 
 let url2 = "http://api.open-notify.org/iss-now.json";
 let url = "http://api.open-notify.org/astros.json";
@@ -30,7 +25,7 @@ async function fetchData(stationName = "") {
     let stationList = [...new Set(stationListAll)];
 
     if (stationName.target.value === "") {
-      renderStationCrew(stationList, selectStation, "option")
+      renderStationCrew(stationList, selectStation, "option");
     }
     if (stationName.target.value === "") {
       renderStationCrew(ostatak, lista, "li");
@@ -47,18 +42,17 @@ async function fetchData(stationName = "") {
 if (onCoordinates) {
   onCoordinates.addEventListener("change", (e) => {
     if (e.target.checked === true) {
-      startTimer()
-
+      startTimer();
     }
-  })
+  });
 }
 
 if (offCoordinates) {
   offCoordinates.addEventListener("change", (e) => {
     if (e.target.checked) {
-      clearInterval(intervalID)
+      clearInterval(intervalID);
     }
-  })
+  });
 }
 
 if (dugme) {
@@ -89,8 +83,6 @@ async function fetchData2() {
 function startTimer() {
   intervalID = setInterval(fetchData2, 2000);
 }
-
-
 
 function renderStationCrew(crew, renderList, elementType) {
   renderList.innerHTML = "";
